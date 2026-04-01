@@ -1,57 +1,41 @@
 <!DOCTYPE html>
-<html lang="fr"> <head>
+<html lang="fr">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Painted Heart - Accueil</title>
+    <title>The Painted Heart - Accueil BD</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="bd-cover-scene">
 
     <section id="home-screen" class="active-section">
         
         <div class="background-alley">
-            <img src="img/back.png" alt="Ruelle bruxelloise en noir et blanc" id="bg-image">
+            <img src="img/back-bd.png" alt="Ville de Bruxelles illustrée en mode BD" id="bg-image">
         </div>
 
-        <main class="splash-container">
-            
-            <img src="img/splash.png" alt="Explosion de peinture rouge" id="paint-splatter">
+       <main class="bd-cover">
+    <div class="cover-header">
+        <h1 id="main-title">THE PAINTED HEART</h1>
+        <p id="sub-title">Explore the streets of Brussels and play your part</p>
+    </div>
 
-            <img src="img/chara.png" alt="Détective arrogant style BD" id="cartoon-character">
+    <div class="cover-illustration"></div>
 
-            <div class="text-content">
-                <h1 id="main-title">THE PAINTED HEART</h1>
-                <p id="sub-title">Explore the streets of Brussels and play your part</p>
-            </div>
-
-            <button id="start-btn">START EXPLORING</button>
-        </main>
+    <div class="cover-footer">
+        <button id="start-btn">START EXPLORING</button>
+    </div>
+</main>
     </section>
 
     <section id="explorer-screen" class="hidden-section">
         <header>
             <h1>Brussels Explorer</h1>
-            </header>
+        </header>
         <div id="gallery-container">
-            </div>
+        </div>
     </section>
 
-    <script>
-        document.getElementById('start-btn').addEventListener('click', function() {
-            const home = document.getElementById('home-screen');
-            const explorer = document.getElementById('explorer-screen');
-
-            home.style.opacity = '0';
-            
-            setTimeout(() => {
-                home.classList.remove('active-section');
-                home.classList.add('hidden-section');
-                
-                explorer.classList.remove('hidden-section');
-                explorer.classList.add('active-section');
-                explorer.style.opacity = '1';
-            }, 500); 
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
