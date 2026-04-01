@@ -488,6 +488,25 @@ body.bd-cover-scene {
     color: #222;
     box-shadow: 6px 6px 0 var(--bd-black);
 }
+.modal-text > p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--bd-black);
+    margin-bottom: 15px;
+    
+    background: var(--bd-white);
+    padding: 15px;
+    border: 3px solid var(--bd-black);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+}
+
+.modal-text > p strong {
+    font-family: Impact, sans-serif;
+    text-transform: uppercase;
+    color: var(--bd-red);
+    letter-spacing: 1px;
+    margin-right: 5px;
+}
 
 .close-modal-btn {
     position: absolute;
@@ -851,7 +870,6 @@ body.bd-cover-scene {
     font-size: 1.3rem;
     text-transform: uppercase;
     cursor: pointer;
-    /* Ombre vers la gauche = Retour */
     box-shadow: -6px 6px 0 var(--bd-red); 
     transition: 0.1s;
 }
