@@ -74,7 +74,7 @@ body.bd-cover-scene {
 
 #main-title {
     font-family: Impact, "Arial Black", sans-serif;
-    font-size: 3.4rem; /* au lieu de 4+ */
+    font-size: 3.4rem; 
     letter-spacing: -1px;
     line-height: 0.9;
 
@@ -163,4 +163,11 @@ body.bd-cover-scene {
     color: var(--bd-black);
     transform: translate(-2px, -2px);
     box-shadow: 8px 8px 0 var(--bd-black);
+}
+.active-section {
+    display: block;
+}
+
+.hidden-section {
+    display: none;
 }
