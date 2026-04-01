@@ -1,302 +1,249 @@
 /* =========================================================
-   1) SELECT HTML ELEMENTS
+   1. HTML ELEMENTS
    ========================================================= */
-
 const startBtn = document.getElementById("start-btn");
 const homeScreen = document.getElementById("home-screen");
 const explorerScreen = document.getElementById("explorer-screen");
+const scrapbookScreen = document.getElementById("scrapbook-screen");
 const galleryContainer = document.getElementById("gallery-container");
+const scrapbookBtn = document.getElementById("scrapbook-btn");
+const backBtn = document.getElementById("back-btn");
 
 /* =========================================================
-   2) API CONFIG
+   2. API CONFIG & GLOBAL STATE
    ========================================================= */
+const API_URL = "https://opendata.brussels.be/api/explore/v2.1/catalog/datasets/bruxelles_parcours_bd/records?limit=30";
 
-const API_URL =
-  "https://opendata.brussels.be/api/explore/v2.1/catalog/datasets/bruxelles_parcours_bd/records?limit=30";
-
-/* =========================================================
-   3) LOCAL STORAGE
-   ========================================================= */
-
+// Load data from LocalStorage or create empty defaults
 let visitedMurals = JSON.parse(localStorage.getItem("visitedMurals")) || [];
 let muralNotes = JSON.parse(localStorage.getItem("muralNotes")) || {};
 
+// Global array to store fetched data for the Scrapbook
+let muralsData = []; 
+
 /* =========================================================
-   4) NAVIGATION
+   3. NAVIGATION ROUTING
    ========================================================= */
-
+// From Home to Explorer
 startBtn.addEventListener("click", () => {
-  homeScreen.classList.remove("active-section");
-  homeScreen.classList.add("hidden-section");
+    homeScreen.classList.replace("active-section", "hidden-section");
+    explorerScreen.classList.replace("hidden-section", "active-section");
+    fetchMurals();
+});
 
-  explorerScreen.classList.remove("hidden-section");
-  explorerScreen.classList.add("active-section");
+// From Explorer to Scrapbook
+scrapbookBtn.addEventListener("click", () => {
+    explorerScreen.classList.replace("active-section", "hidden-section");
+    scrapbookScreen.classList.replace("hidden-section", "active-section");
+    renderScrapbook(); 
+});
 
-  fetchMurals();
+// From Scrapbook back to Explorer
+backBtn.addEventListener("click", () => {
+    scrapbookScreen.classList.replace("active-section", "hidden-section");
+    explorerScreen.classList.replace("hidden-section", "active-section");
 });
 
 /* =========================================================
-   5) FETCH MURAL DATA
+   4. DATA FETCHING
    ========================================================= */
-
 async function fetchMurals() {
-  galleryContainer.innerHTML = "<p>Loading murals...</p>";
+    galleryContainer.innerHTML = "<p>Loading the comic streets...</p>";
 
-  try {
-    const response = await fetch(API_URL);
+    try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error: ${response.status}`);
+        const data = await response.json();
+        const murals = data.results || [];
+
+        if (murals.length === 0) {
+            galleryContainer.innerHTML = "<p>No murals found.</p>";
+            return;
+        }
+
+        muralsData = murals; // Save data globally for the Scrapbook
+        renderMurals(murals);
+
+    } catch (error) {
+        console.error("Fetch error:", error);
+        galleryContainer.innerHTML = `<p style="color:red;">Communication error. Cannot reach the server.</p>`;
     }
-
-    const data = await response.json();
-    const murals = data.results || [];
-
-    if (murals.length === 0) {
-      galleryContainer.innerHTML = "<p>No murals found.</p>";
-      return;
-    }
-
-    renderMurals(murals);
-  } catch (error) {
-    console.error("Fetch error:", error);
-    galleryContainer.innerHTML =
-      `<p style="color:red;">Unable to load murals right now.</p>`;
-  }
 }
 
 /* =========================================================
-   6) RENDER ALL CARDS
+   5. EXPLORER: RENDER CARDS
    ========================================================= */
-
 function renderMurals(murals) {
-  galleryContainer.innerHTML = "";
-
-  murals.forEach((mural) => {
-    const card = createMuralCard(mural);
-    galleryContainer.appendChild(card);
-  });
+    galleryContainer.innerHTML = "";
+    murals.forEach((mural) => {
+        const card = createMuralCard(mural);
+        galleryContainer.appendChild(card);
+    });
 }
-
-/* =========================================================
-   7) DATA HELPERS
-   ========================================================= */
-
-function getMuralTitle(mural) {
-  return mural.nom_de_la_fresque || "Comic mural";
-}
-
-function getMuralImage(mural) {
-  return mural.image?.url || "img/bd-cover.png";
-}
-
-function getMuralLocation(mural) {
-  const address = mural.adresse_fr || "Unknown street";
-  const city = mural.commune || "Brussels";
-  return `${address}, ${city}`;
-}
-
-function getMuralMapLink(mural) {
-  return mural.google_maps || "#";
-}
-
-function getMuralDescription(mural) {
-  const title = mural.nom_de_la_fresque || "This mural";
-  const artist = mural.dessinateur || "Unknown artist";
-  const publisher = mural.maison_d_edition || "Unknown publisher";
-  const year = mural.date || "an unknown year";
-  const location = getMuralLocation(mural);
-
-  return `${title} is a comic mural located at ${location}. It is based on the work of ${artist}, published by ${publisher}, and was created in ${year}. This mural is part of the Brussels Comic Book Route and contributes to the city’s strong comic-book identity.`;
-}
-
-/* =========================================================
-   8) VISITED STORAGE HELPERS
-   ========================================================= */
-
-function saveVisitedMurals() {
-  localStorage.setItem("visitedMurals", JSON.stringify(visitedMurals));
-}
-
-function isVisited(title) {
-  return visitedMurals.includes(title);
-}
-
-function toggleVisited(title) {
-  if (isVisited(title)) {
-    visitedMurals = visitedMurals.filter((item) => item !== title);
-  } else {
-    visitedMurals.push(title);
-  }
-
-  saveVisitedMurals();
-}
-
-/* =========================================================
-   9) NOTE STORAGE HELPERS
-   ========================================================= */
-
-function saveMuralNotes() {
-  localStorage.setItem("muralNotes", JSON.stringify(muralNotes));
-}
-
-function getNote(title) {
-  return muralNotes[title] || "";
-}
-
-function saveNote(title, noteText) {
-  muralNotes[title] = noteText;
-  saveMuralNotes();
-}
-
-/* =========================================================
-   10) CREATE ONE MURAL CARD
-   ========================================================= */
 
 function createMuralCard(mural) {
-  const card = document.createElement("article");
-  card.classList.add("mural-card");
+    const card = document.createElement("article");
+    card.classList.add("mural-card");
 
-  const title = getMuralTitle(mural);
-  const image = getMuralImage(mural);
-  const location = getMuralLocation(mural);
-  const description = getMuralDescription(mural);
-  const mapLink = getMuralMapLink(mural);
+    const title = getMuralTitle(mural);
+    const image = getMuralImage(mural);
+    const location = getMuralLocation(mural);
+    const description = getMuralDescription(mural);
+    const mapLink = getMuralMapLink(mural);
 
-  card.innerHTML = `
-    <img 
-      src="${image}" 
-      alt="${title}" 
-      class="mural-image"
-      onerror="this.src='img/bd-cover.png'"
-    >
+    card.innerHTML = `
+        <img src="${image}" alt="${title}" class="mural-image" onerror="this.src='img/bd-cover.png'">
+        <div class="mural-info">
+            <h3 class="mural-title">${title}</h3>
+            <p class="mural-location">${location}</p>
+        </div>
+        <div class="mural-actions">
+            <button class="favorite-btn" title="Add to favorites">❤️</button>
+            <button class="note-btn" title="Open case file">✏️</button>
+            <a href="${mapLink}" target="_blank" class="map-btn" title="Show on map">📍</a>
+            <button class="visited-btn" title="Mark as found">✔️</button>
+        </div>
+    `;
 
-    <div class="mural-info">
-      <h3 class="mural-title">${title}</h3>
-      <p class="mural-location">${location}</p>
-    </div>
+    const muralImage = card.querySelector(".mural-image");
+    const noteBtn = card.querySelector(".note-btn");
+    const visitedBtn = card.querySelector(".visited-btn");
 
-    <div class="mural-actions">
-      <button class="favorite-btn" title="Add to favorites">❤️</button>
-      <button class="note-btn" title="Open personal note">✏️</button>
-      <a href="${mapLink}" target="_blank" class="map-btn" title="Open map">📍</a>
-      <button class="visited-btn" title="Mark as visited">✔️</button>
-    </div>
-  `;
+    muralImage.addEventListener("click", () => openImageModal(title, image, description, location));
+    noteBtn.addEventListener("click", () => openImageModal(title, image, description, location));
 
-  const muralImage = card.querySelector(".mural-image");
-  const noteBtn = card.querySelector(".note-btn");
-  const visitedBtn = card.querySelector(".visited-btn");
+    updateVisitedStyle(visitedBtn, title);
+    visitedBtn.addEventListener("click", () => {
+        toggleVisited(title);
+        updateVisitedStyle(visitedBtn, title);
+    });
 
-  muralImage.addEventListener("click", () => {
-    openImageModal(title, image, description, location);
-  });
-
-  noteBtn.addEventListener("click", () => {
-    openImageModal(title, image, description, location);
-  });
-
-  updateVisitedButton(visitedBtn, title);
-
-  visitedBtn.addEventListener("click", () => {
-    toggleVisited(title);
-    updateVisitedButton(visitedBtn, title);
-  });
-
-  return card;
+    return card;
 }
 
 /* =========================================================
-   11) UPDATE VISITED BUTTON STYLE
+   6. SCRAPBOOK: RENDER BOARD
    ========================================================= */
+function renderScrapbook() {
+    const container = document.getElementById("scrapbook-container");
+    container.innerHTML = "";
 
-function updateVisitedButton(button, title) {
-  if (isVisited(title)) {
-    button.classList.add("visited-active");
-  } else {
-    button.classList.remove("visited-active");
-  }
+    muralsData.forEach(mural => {
+        const title = getMuralTitle(mural);
+        const image = getMuralImage(mural);
+        const hasVisited = isVisited(title);
+
+        const card = document.createElement("div");
+        card.classList.add("scrap-card");
+
+        card.innerHTML = `
+            <div class="scrap-polaroid ${hasVisited ? "unlocked" : "locked"}">
+                <div class="tape"></div>
+                <img src="${image}" alt="${title}" onerror="this.src='img/bd-cover.png'">
+                ${!hasVisited 
+                    ? `<div class="lock-overlay"><span class="lock-text">🔒 MYSTERY</span></div>` 
+                    : `<div class="comic-badge">BAM!</div>`
+                }
+                <p class="scrap-title">${title}</p>
+            </div>
+        `;
+        container.appendChild(card);
+    });
 }
 
 /* =========================================================
-   12) OPEN IMAGE MODAL
+   7. MODAL LOGIC
    ========================================================= */
-
 function openImageModal(title, image, description, location) {
-  const existingModal = document.querySelector(".image-modal");
+    const existingModal = document.querySelector(".image-modal");
+    if (existingModal) existingModal.remove();
 
-  if (existingModal) {
-    existingModal.remove();
-  }
+    const savedNote = getNote(title);
+    const modal = document.createElement("div");
+    modal.classList.add("image-modal");
 
-  const savedNote = getNote(title);
-
-  const modal = document.createElement("div");
-  modal.classList.add("image-modal");
-
-  modal.innerHTML = `
-    <div class="modal-overlay"></div>
-
-    <div class="modal-content">
-      <button class="close-modal-btn" aria-label="Close modal">✖</button>
-
-      <img 
-        src="${image}" 
-        alt="${title}" 
-        class="modal-image"
-        onerror="this.src='img/bd-cover.png'"
-      >
-
-      <div class="modal-text">
-        <h2>${title}</h2>
-
-        <div class="modal-location-badge">
-          ${location}
+    modal.innerHTML = `
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="close-modal-btn">✖</button>
+            <img src="${image}" alt="${title}" class="modal-image" onerror="this.src='img/bd-cover.png'">
+            <div class="modal-text">
+                <h2>${title}</h2>
+                <p><strong>Location:</strong> ${location}</p>
+                <p>${description}</p>
+                <div class="note-panel">
+                    <h3>Detective Notes</h3>
+                    <textarea class="note-textarea" placeholder="Add clues here...">${savedNote}</textarea>
+                    <button class="save-note-btn">SAVE ENTRY</button>
+                    <p class="save-note-message"></p>
+                </div>
+            </div>
         </div>
+    `;
 
-        <div class="modal-description">
-          <p>${description}</p>
-        </div>
+    document.body.appendChild(modal);
 
-        <div class="note-panel">
-          <h3 class="note-title">My personal note</h3>
+    const closeBtn = modal.querySelector(".close-modal-btn");
+    const overlay = modal.querySelector(".modal-overlay");
+    const textarea = modal.querySelector(".note-textarea");
+    const saveBtn = modal.querySelector(".save-note-btn");
+    const saveMessage = modal.querySelector(".save-note-message");
 
-          <textarea
-            class="note-textarea"
-            placeholder="Write your thoughts, impressions, or useful details here..."
-          >${savedNote}</textarea>
+    closeBtn.addEventListener("click", () => modal.remove());
+    overlay.addEventListener("click", () => modal.remove());
 
-          <button class="save-note-btn">Save note</button>
+    saveBtn.addEventListener("click", () => {
+        saveNote(title, textarea.value.trim());
+        saveMessage.textContent = "Entry saved.";
+        setTimeout(() => saveMessage.textContent = "", 2000);
+    });
+}
 
-          <p class="save-note-message"></p>
-        </div>
-      </div>
-    </div>
-  `;
+/* =========================================================
+   8. DATA HELPERS
+   ========================================================= */
+function getMuralTitle(mural) { return mural.nom_de_la_fresque || "Unknown Comic"; }
+function getMuralImage(mural) { return mural.image?.url || "img/bd-cover.png"; }
+function getMuralMapLink(mural) { return mural.google_maps || "#"; }
+function getMuralLocation(mural) {
+    const address = mural.adresse_fr || "Unknown street";
+    const city = mural.commune || "Brussels";
+    return `${address}, ${city}`;
+}
+function getMuralDescription(mural) {
+    const title = mural.nom_de_la_fresque || "This mural";
+    const artist = mural.dessinateur || "Unknown artist";
+    const year = mural.date || "an unknown year";
+    return `${title} is a comic mural based on the work of ${artist}, created in ${year}. It is part of the Brussels Comic Book Route.`;
+}
 
-  document.body.appendChild(modal);
+/* =========================================================
+   9. LOCAL STORAGE & STATE LOGIC
+   ========================================================= */
+function saveVisitedMurals() { localStorage.setItem("visitedMurals", JSON.stringify(visitedMurals)); }
+function isVisited(title) { return visitedMurals.includes(title); }
 
-  const closeBtn = modal.querySelector(".close-modal-btn");
-  const overlay = modal.querySelector(".modal-overlay");
-  const textarea = modal.querySelector(".note-textarea");
-  const saveBtn = modal.querySelector(".save-note-btn");
-  const saveMessage = modal.querySelector(".save-note-message");
+function toggleVisited(title) {
+    if (isVisited(title)) {
+        visitedMurals = visitedMurals.filter((item) => item !== title);
+    } else {
+        visitedMurals.push(title);
+    }
+    saveVisitedMurals();
+}
 
-  closeBtn.addEventListener("click", () => {
-    modal.remove();
-  });
+function updateVisitedStyle(button, title) {
+    if (isVisited(title)) {
+        button.classList.add("visited-active");
+    } else {
+        button.classList.remove("visited-active");
+    }
+}
 
-  overlay.addEventListener("click", () => {
-    modal.remove();
-  });
-
-  saveBtn.addEventListener("click", () => {
-    const noteText = textarea.value.trim();
-    saveNote(title, noteText);
-
-    saveMessage.textContent = "Note saved successfully.";
-    setTimeout(() => {
-      saveMessage.textContent = "";
-    }, 1800);
-  });
+function saveMuralNotes() { localStorage.setItem("muralNotes", JSON.stringify(muralNotes)); }
+function getNote(title) { return muralNotes[title] || ""; }
+function saveNote(title, text) {
+    muralNotes[title] = text;
+    saveMuralNotes();
 }

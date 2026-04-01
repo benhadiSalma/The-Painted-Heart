@@ -6,7 +6,7 @@
     --bd-beige: #f9f4e8;
     --bd-light-beige: #f4efe4;
     --bd-black: #111111;
-    --bd-red: #e63946;
+    --bd-red: #c81f1f;
     --bd-yellow: #ffd60a;
     --bd-white: #ffffff;
     --bd-gray: #444444;
@@ -247,6 +247,38 @@ body.bd-cover-scene {
     padding: 14px 28px;
     box-shadow: 8px 8px 0 var(--bd-black);
     text-align: center;
+}
+
+.explorer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px; 
+    flex-wrap: wrap; 
+    margin-bottom: 30px;
+    background: var(--bd-white);
+    padding: 20px 30px;
+    border: 6px solid var(--bd-black);
+    box-shadow: 10px 10px 0 var(--bd-black);
+}
+
+#scrapbook-btn {
+    background: var(--bd-yellow);
+    border: 4px solid var(--bd-black);
+    padding: 12px 25px;
+    font-family: Impact, sans-serif;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 5px 5px 0 var(--bd-black);
+    transition: 0.2s;
+    transform: rotate(2deg); 
+}
+
+#scrapbook-btn:hover {
+    transform: translate(-3px, -3px) rotate(0deg);
+    background: var(--bd-red);
+    color: var(--bd-white);
 }
 
 /* =========================================================
@@ -681,4 +713,151 @@ body.bd-cover-scene {
         font-size: 1.2rem;
         padding: 14px 18px;
     }
+}
+
+/* =========================
+   SCRAPBOOK GRID
+========================= */
+#scrapbook-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 25px;
+  padding: 30px;
+}
+
+/* =========================
+   TITLE COMIC
+========================= */
+.comic-title {
+  font-family: Impact, sans-serif;
+  font-size: 2.5rem;
+  text-align: center;
+  color: #1A1A1A;
+  text-shadow: 3px 3px 0 #FFD60A;
+}
+
+/* =========================
+   POLAROID STYLE
+========================= */
+.scrap-polaroid {
+  background: #fff;
+  border: 4px solid black;
+  padding: 10px;
+  position: relative;
+  transform: rotate(-2deg);
+  transition: 0.3s;
+}
+
+.scrap-polaroid:hover {
+  transform: rotate(0deg) scale(1.05);
+}
+
+/* IMAGE */
+.scrap-polaroid img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+/* TITLE */
+.scrap-title {
+  margin-top: 8px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+/* =========================
+   TAPE EFFECT
+========================= */
+.tape {
+  width: 40px;
+  height: 12px;
+  background: rgba(255,255,255,0.6);
+  border: 2px dashed #ccc;
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%) rotate(5deg);
+}
+
+/* =========================
+   LOCK STATE
+========================= */
+.scrap-polaroid.locked img {
+  filter: grayscale(100%) blur(3px);
+}
+
+.lock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 140px;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lock-text {
+  background: white;
+  padding: 5px 10px;
+  border: 3px solid black;
+  font-weight: bold;
+}
+
+/* =========================
+   UNLOCKED COMIC EFFECT
+========================= */
+.comic-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #FFD60A;
+  border: 3px solid black;
+  padding: 5px 8px;
+  font-weight: bold;
+  transform: rotate(15deg);
+}
+
+/* =========================
+   HEADER
+========================= */
+.scrap-title {
+    margin-top: 15px;
+    font-family: Impact, sans-serif;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    text-align: center;
+    background: var(--bd-black);
+    color: var(--bd-yellow);
+    padding: 8px 10px;
+    border: 2px solid var(--bd-black);
+    display: block;
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
+}
+.scrapbook-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+}
+#back-btn {
+    background: var(--bd-black);
+    color: var(--bd-white);
+    border: 4px solid var(--bd-red);
+    padding: 12px 25px;
+    font-family: Impact, sans-serif;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    /* Ombre vers la gauche = Retour */
+    box-shadow: -6px 6px 0 var(--bd-red); 
+    transition: 0.1s;
+}
+
+#back-btn:hover {
+    background: var(--bd-red);
+    transform: translate(2px, -2px);
+    box-shadow: -8px 8px 0 var(--bd-black);
 }
