@@ -66,5 +66,5 @@ We hebben AI-tools (Gemini en ChatGPT) ingezet als ondersteuning voor code-optim
 
 * **AI Chatlog Selma (Gemini):** [https://gemini.google.com/share/c907342c542e](https://gemini.google.com/share/c907342c542e)
   *Focus op architectuur, API fetch, LocalStorage en debugging.*
-* **AI Chatlog Yassmine (Gemini):** [Link invoegen]
+* **AI Chatlog Yassmine (Gemini):** Https://g.co/gemini/share/eb26f3957dfb
   *Focus op UI-componenten. Aanvullende zoekopdrachten via ChatGPT zijn helaas niet opgeslagen door gebruik zonder account.*
