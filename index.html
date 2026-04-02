@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Painted Heart - Comic Explorer</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="bd-cover-scene">
 
     <section id="home-screen" class="active-section">
@@ -29,14 +31,14 @@
             <div class="header-title-box">
                 <h1 id="explorer-title" title="Return to Home & Reset Filters">Brussels Explorer</h1>
             </div>
-            
+
             <div class="filter-zone">
-                <select id="lang-select">
-                    <option value="en">English</option>
-                    <option value="fr">Français</option>
-                    <option value="nl">Nederlands</option>
+                <select id="sort-select">
+                    <option value="">Sort by...</option>
+                    <option value="asc">A - Z</option>
+                    <option value="desc">Z - A</option>
                 </select>
-                
+
                 <input type="text" id="search-input" placeholder="Search for a comic...">
                 <select id="commune-select">
                     <option value="">All municipalities</option>
@@ -55,7 +57,7 @@
     <section id="scrapbook-screen" class="hidden-section">
         <header class="scrapbook-header">
             <h1 class="comic-title" id="scrap-main-title">MY SCRAPBOOK 💥</h1>
-        
+
             <div class="header-actions">
                 <button id="scrap-theme-toggle" class="theme-toggle" title="Toggle Dark Mode">🌑</button>
                 <button id="back-btn">← Back</button>
@@ -66,4 +68,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

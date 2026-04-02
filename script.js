@@ -11,11 +11,30 @@ const backBtn = document.getElementById("back-btn");
 
 const searchInput = document.getElementById("search-input");
 const communeSelect = document.getElementById("commune-select");
+const sortSelect = document.getElementById("sort-select"); // NOUVEAU: Le select pour le tri
 const favoritesBtn = document.getElementById("favorites-btn");
 
 const globalThemeToggle = document.getElementById("global-theme-toggle");
 const langSelect = document.getElementById("lang-select");
 const explorerTitle = document.getElementById("explorer-title");
+
+/* =========================================================
+   1.B OBSERVER API (Animation au scroll)
+   ========================================================= */
+const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.15
+};
+
+const muralObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
 
 /* =========================================================
    2. API CONFIG & GLOBAL STATE
@@ -53,7 +72,9 @@ const translations = {
         modalSaveBtn: "SAVE ENTRY",
         modalPlaceholder: "Add clues here...",
         modalSavedMsg: "Entry saved.",
-        modalLocation: "Location: "
+        modalLocation: "Location: ",
+        errorEmpty: "Error: Note cannot be empty!",
+        errorShort: "Error: Note is too short (min 5 characters)."
     },
     fr: {
         homeTitle: "LE CŒUR PEINT",
@@ -72,7 +93,9 @@ const translations = {
         modalSaveBtn: "SAUVEGARDER",
         modalPlaceholder: "Ajoutez des indices ici...",
         modalSavedMsg: "Note sauvegardée.",
-        modalLocation: "Adresse : "
+        modalLocation: "Adresse : ",
+        errorEmpty: "Erreur : La note ne peut pas être vide !",
+        errorShort: "Erreur : Trop court (min 5 caractères)."
     },
     nl: {
         homeTitle: "HET GESCHILDERDE HART",
@@ -91,7 +114,9 @@ const translations = {
         modalSaveBtn: "OPSLAAN",
         modalPlaceholder: "Voeg hier aanwijzingen toe...",
         modalSavedMsg: "Notitie opgeslagen.",
-        modalLocation: "Locatie: "
+        modalLocation: "Locatie: ",
+        errorEmpty: "Fout: Notitie mag niet leeg zijn!",
+        errorShort: "Fout: Te kort (min 5 tekens)."
     }
 };
 
@@ -151,6 +176,7 @@ explorerTitle.addEventListener("click", () => {
 
     if (searchInput) searchInput.value = "";
     if (communeSelect) communeSelect.value = "";
+    if (sortSelect) sortSelect.value = "";
     
     if (favoritesBtn) {
         favoritesBtn.style.background = "";
@@ -218,9 +244,22 @@ function renderFilteredGallery() {
         
         return matchesSearch && matchesCommune && matchesFavorite;
     });
+
+    // LOGIQUE DE TRI (A-Z / Z-A)
+    if (sortSelect && sortSelect.value) {
+        filtered.sort((a, b) => {
+            const titleA = getMuralTitle(a).toLowerCase();
+            const titleB = getMuralTitle(b).toLowerCase();
+            if (sortSelect.value === "asc") return titleA.localeCompare(titleB);
+            if (sortSelect.value === "desc") return titleB.localeCompare(titleA);
+            return 0;
+        });
+    }
+
     renderMurals(filtered);
 }
 
+// Event Listeners pour les filtres
 if (searchInput) {
     searchInput.addEventListener("input", (e) => {
         currentSearch = e.target.value;
@@ -231,6 +270,12 @@ if (searchInput) {
 if (communeSelect) {
     communeSelect.addEventListener("change", (e) => {
         currentCommune = e.target.value;
+        renderFilteredGallery();
+    });
+}
+
+if (sortSelect) {
+    sortSelect.addEventListener("change", () => {
         renderFilteredGallery();
     });
 }
@@ -315,6 +360,9 @@ function createMuralCard(mural) {
         if (showOnlyFavorites) renderFilteredGallery();
     });
 
+    // Ajout de l'Observer sur cette carte générée
+    muralObserver.observe(card);
+
     return card;
 }
 
@@ -349,7 +397,7 @@ function renderScrapbook() {
 }
 
 /* =========================================================
-   8. MODAL LOGIC
+   8. MODAL LOGIC (Avec Validation de Formulaire)
    ========================================================= */
 function openImageModal(title, image, description, location) {
     const existingModal = document.querySelector(".image-modal");
@@ -392,7 +440,23 @@ function openImageModal(title, image, description, location) {
     overlay.addEventListener("click", () => modal.remove());
 
     saveBtn.addEventListener("click", () => {
-        saveNote(title, textarea.value.trim());
+        const noteText = textarea.value.trim();
+        
+        // Logique de validation stricte
+        if (noteText.length === 0) {
+            saveMessage.style.color = "var(--bd-red, #E63946)";
+            saveMessage.textContent = t.errorEmpty;
+            return; 
+        }
+        
+        if (noteText.length < 5) {
+            saveMessage.style.color = "var(--bd-red, #E63946)";
+            saveMessage.textContent = t.errorShort;
+            return;
+        }
+
+        saveNote(title, noteText);
+        saveMessage.style.color = "#1d6f42"; 
         saveMessage.textContent = t.modalSavedMsg;
         setTimeout(() => saveMessage.textContent = "", 2000);
     });
