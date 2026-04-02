@@ -1,85 +1,86 @@
 /* =========================================================
-   ROOT COLORS
+   1. GLOBAL VARIABLES & PALETTE
    ========================================================= */
-
 :root {
     --bd-beige: #f9f4e8;
     --bd-light-beige: #f4efe4;
     --bd-black: #111111;
-    --bd-red: #c81f1f;
-    --bd-yellow: #ffd60a;
+    --bd-red: #E63946;
+    --bd-yellow: #FFD60A;
     --bd-white: #ffffff;
     --bd-gray: #444444;
-     --text-main: #111111; 
+    --text-main: #111111; 
 }
+
+
 body.dark-mode {
-    --bd-beige: #1a1a1a;      
-    --bd-light-beige: #242424; 
-    --bd-black: #000000;       
-    --bd-white: #2a2a2a;      
-    --text-main: #090907;     
+    --bd-beige: #2d241e;      
+    --bd-light-beige: #3e3129; 
+    --bd-black: #140f0c;       
+    --bd-white: #221b15;      
+    --bd-red: #c94040;
+    --bd-yellow: #d4ae22;
+    --text-main: #f0e6d2;
+    --bd-gray: #b0987c;     
 }
-
-
-body {
-    background-color: var(--bd-beige);
-    color: var(--text-main);
-    transition: background 0.3s, color 0.3s; 
-}
-h1, h2, h3, h4, p, span {
+body.dark-mode .header-title-box h1 {
     color: var(--text-main);
 }
 
+body.dark-mode .header-title-box {
+    background: var(--bd-black);
+    border-color: var(--bd-gray);
+}
+body.dark-mode #explorer-screen::before {
+    opacity: 0.04; 
+}
 
 /* =========================================================
-   RESET
+   2. RESET & BASE
    ========================================================= */
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* =========================================================
-   BODY
-   ========================================================= */
-
-body.bd-cover-scene {
+body {
     width: 100%;
     min-height: 100vh;
     overflow-x: hidden;
-    overflow-y: auto;
-    position: relative;
     font-family: Arial, sans-serif;
-    background: var(--bd-light-beige);
+    background-color: var(--bd-light-beige);
+    color: var(--text-main);
+    transition: background 0.3s, color 0.3s; 
 }
 
-/* =========================================================
-   SECTION VISIBILITY
-   ========================================================= */
+h1, h2, h3, h4, p, span {
+    color: var(--text-main);
+}
 
 .active-section {
     display: block;
+    animation: fadeIn 0.4s ease-in;
 }
 
 .hidden-section {
-    display: none;
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* =========================================================
-   HOME SCREEN
+   3. HOME SCREEN
    ========================================================= */
-
 #home-screen {
+    position: relative;
     width: 100%;
     height: 100vh;
-    position: relative;
+    overflow: hidden;
 }
-
-/* =========================================================
-   HOME BACKGROUND
-   ========================================================= */
 
 .background-alley {
     position: fixed;
@@ -91,40 +92,29 @@ body.bd-cover-scene {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: saturate(0.8) opacity(0.5);
 }
-
-/* =========================================================
-   HOME COVER
-   ========================================================= */
 
 .bd-cover {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-
     width: 700px;
     height: 760px;
-
     background: var(--bd-beige);
     border: 10px solid var(--bd-black);
     box-shadow: 0 22px 55px rgba(0, 0, 0, 0.45);
     overflow: hidden;
     z-index: 10;
-
     display: flex;
     flex-direction: column;
 }
-
-/* =========================================================
-   HOME HEADER
-   ========================================================= */
 
 .cover-header {
     background: var(--bd-beige);
     padding: 18px 20px 12px 20px;
     border-bottom: 6px solid var(--bd-black);
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -153,10 +143,6 @@ body.bd-cover-scene {
     box-shadow: 4px 4px 0 var(--bd-red);
 }
 
-/* =========================================================
-   HOME MAIN IMAGE
-   ========================================================= */
-
 .cover-illustration {
     flex: 1;
     background-image: url("img/bd-cover.png");
@@ -174,28 +160,10 @@ body.bd-cover-scene {
     pointer-events: none;
 }
 
-.cover-illustration::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(244, 239, 228, 0.04) 0%,
-        rgba(244, 239, 228, 0.00) 35%,
-        rgba(17, 17, 17, 0.04) 100%
-    );
-    pointer-events: none;
-}
-
-/* =========================================================
-   HOME FOOTER
-   ========================================================= */
-
 .cover-footer {
     background: var(--bd-beige);
     border-top: 6px solid var(--bd-black);
     padding: 18px 20px 20px 20px;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -205,22 +173,18 @@ body.bd-cover-scene {
     width: 100%;
     max-width: 360px;
     display: block;
-
     padding: 16px 24px;
-
     background: var(--bd-red);
-    color: var(--bd-white);
+    color: #ffffff;
     border: 4px solid var(--bd-black);
-
     font-family: Impact, "Arial Black", sans-serif;
     font-size: 1.45rem;
     letter-spacing: 1px;
     text-transform: uppercase;
     text-align: center;
-
     cursor: pointer;
     box-shadow: 8px 8px 0 var(--bd-black);
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+    transition: 0.15s ease;
 }
 
 #start-btn:hover {
@@ -231,62 +195,44 @@ body.bd-cover-scene {
 }
 
 /* =========================================================
-   EXPLORER SCREEN
+   4. EXPLORER SCREEN & BACKGROUND FIX
    ========================================================= */
-
 #explorer-screen {
     min-height: 100vh;
     padding: 32px;
-    background:
-        linear-gradient(rgba(244, 239, 228, 0.92), rgba(244, 239, 228, 0.92)),
-        url("img/back-bd.png") center center / cover no-repeat;
+    background-color: var(--bd-light-beige);
     position: relative;
     z-index: 2;
 }
 
-/* =========================================================
-   EXPLORER HEADER 
-   ========================================================= */
-:root {
-    --bd-black: #000000;
-    --bd-white: #ffffff;
-    --bd-yellow: #ffde00;
-    --bd-red: #ff4b2b; 
+#explorer-screen::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("img/back-bd.png") center center / cover no-repeat;
+    opacity: 0.15;
+    z-index: -1;
+    pointer-events: none;
 }
 
 .explorer-header {
     display: flex;
     align-items: center;
-    justify-content: flex-start; 
+    justify-content: space-between; 
+    flex-wrap: wrap;
     padding: 15px 25px;
     background: var(--bd-white);
     border: 5px solid var(--bd-black);
     box-shadow: 0 8px 0 var(--bd-black); 
     gap: 20px;
-}
-
-.filter-zone {
-    display: flex;
-    gap: 10px;
-}
-
-#search-input,
-#commune-select {
-    padding: 10px;
-    border: 3px solid var(--bd-black);
-    font-family: Arial, sans-serif;
-    font-weight: bold;
+    margin-bottom: 30px;
 }
 
 .header-title-box {
-    
     background: var(--bd-white);
     border: 5px solid var(--bd-black);
     padding: 10px 25px;
     box-shadow: 6px 6px 0 var(--bd-black);
-    margin-right: auto; 
-    margin-left: 20px;
-    
     display: flex;
     align-items: center;
     justify-content: center;
@@ -304,10 +250,10 @@ body.bd-cover-scene {
     display: flex;
     align-items: center;
     gap: 15px;
+    flex-wrap: wrap;
 }
 
-#favorites-btn {
-    background: var(--bd-white);
+#favorites-btn, #scrapbook-btn {
     border: 4px solid var(--bd-black);
     padding: 10px 20px;
     font-family: Impact, sans-serif;
@@ -316,58 +262,101 @@ body.bd-cover-scene {
     cursor: pointer;
     box-shadow: 4px 4px 0 var(--bd-black);
     transition: 0.2s;
+}
+
+#favorites-btn {
+    background: var(--bd-yellow);
+    color: var(--text-main);
 }
 
 #favorites-btn:hover {
     transform: translate(-2px, -2px);
     background: var(--bd-red);
-    color: var(--bd-white);
+    color: #ffffff;
     box-shadow: 6px 6px 0 var(--bd-black);
 }
 
-
 #scrapbook-btn {
     background: var(--bd-yellow);
-    border: 4px solid var(--bd-black);
-    padding: 10px 20px;
-    font-family: Impact, sans-serif;
-    font-size: 1.1rem;
-    text-transform: uppercase;
-    cursor: pointer;
-    box-shadow: 4px 4px 0 var(--bd-black);
-    transition: 0.2s;
+    color: #111111;
 }
 
 #scrapbook-btn:hover {
     transform: translate(-2px, -2px);
     background: var(--bd-red);
-    color: var(--bd-white);
-}
-
-
-#theme-toggle {
-    background: white;
-    border: 3px solid var(--bd-black);
-    padding: 8px;
-    box-shadow: 4px 4px 0 var(--bd-black);
-    cursor: pointer;
-    font-size: 1.2rem;
+    color: #ffffff;
 }
 
 /* =========================================================
-   GALLERY GRID
+   5. FILTER ZONE & DARK MODE TOGGLE (COMIC STYLE)
    ========================================================= */
+.filter-zone {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    align-items: center;
+}
 
+#search-input,
+#commune-select,
+#lang-select {
+    padding: 10px 15px;
+    border: 4px solid var(--bd-black);
+    font-family: Impact, sans-serif; 
+    font-size: 1.05rem;
+    background: var(--bd-white);
+    color: var(--text-main);
+    box-shadow: 4px 4px 0 var(--bd-black); 
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    outline: none;
+    cursor: pointer;
+}
+
+#search-input::placeholder {
+    color: #888;
+    font-family: Arial, sans-serif; 
+    font-weight: bold;
+    text-transform: none;
+}
+
+#search-input:focus,
+#commune-select:focus,
+#lang-select:focus,
+#search-input:hover,
+#commune-select:hover,
+#lang-select:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--bd-black);
+    background: var(--bd-beige); 
+}
+
+#global-theme-toggle {
+    background: var(--bd-yellow);
+    color: var(--bd-white);
+    border: 4px solid var(--bd-black);
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--bd-gray);
+    transition: 0.2s;
+}
+
+#global-theme-toggle:hover {
+    background: var(--bd-red);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--bd-black);
+}
+
+/* =========================================================
+   6. GALLERY GRID & CARDS
+   ========================================================= */
 #gallery-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
     gap: 24px;
     align-items: stretch;
+    align-content: start; 
 }
-
-/* =========================================================
-   MURAL CARD
-   ========================================================= */
 
 .mural-card {
     background: var(--bd-white);
@@ -380,17 +369,11 @@ body.bd-cover-scene {
     position: relative;
     transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
-.mural-card h3, .mural-card p {
-    color: var(--text-main);
-}
+
 .mural-card:hover {
     transform: translate(-3px, -3px);
     box-shadow: 10px 10px 0 var(--bd-black);
 }
-
-/* =========================================================
-   MURAL IMAGE
-   ========================================================= */
 
 .mural-image {
     width: 100%;
@@ -398,24 +381,19 @@ body.bd-cover-scene {
     object-fit: cover;
     display: block;
     cursor: pointer;
-    transition: transform 0.25s ease, filter 0.25s ease;
+    transition: filter 0.25s ease;
     border-bottom: 4px solid var(--bd-black);
     position: relative;
     z-index: 2;
 }
 
 .mural-image:hover {
-    transform: scale(1.04);
-    filter: contrast(1.03) saturate(1.04);
+    filter: contrast(1.1) saturate(1.1);
 }
-
-/* =========================================================
-   MURAL INFO
-   ========================================================= */
 
 .mural-info {
     padding: 14px 14px 10px;
-    background: #fffdf8;
+    background: var(--bd-white);
     min-height: 115px;
 }
 
@@ -424,10 +402,9 @@ body.bd-cover-scene {
     font-size: 1.2rem;
     line-height: 1.05;
     margin-bottom: 8px;
-    color: var(--bd-black);
+    color: var(--text-main);
     text-transform: uppercase;
     text-align: center;
-    min-height: 2.5em;
 }
 
 .mural-location {
@@ -435,12 +412,7 @@ body.bd-cover-scene {
     color: var(--bd-gray);
     line-height: 1.4;
     text-align: center;
-    min-height: 2.8em;
 }
-
-/* =========================================================
-   MURAL ACTIONS
-   ========================================================= */
 
 .mural-actions {
     display: flex;
@@ -465,7 +437,7 @@ body.bd-cover-scene {
     cursor: pointer;
     text-decoration: none;
     box-shadow: 3px 3px 0 var(--bd-black);
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    transition: 0.15s ease;
     color: var(--bd-black);
 }
 
@@ -473,13 +445,15 @@ body.bd-cover-scene {
 .mural-actions a:hover {
     transform: translate(-2px, -2px);
     box-shadow: 5px 5px 0 var(--bd-black);
-    background: #ffe27a;
+    background: var(--bd-yellow);
 }
 
-/* =========================================================
-   MODAL
-   ========================================================= */
+.visited-active { background: #4ade80 !important; }
+.favorite-active { background: #ffb3ba !important; }
 
+/* =========================================================
+   7. MODAL
+   ========================================================= */
 .image-modal {
     position: fixed;
     inset: 0;
@@ -508,7 +482,6 @@ body.bd-cover-scene {
     background: var(--bd-beige);
     border: 6px solid var(--bd-black);
     box-shadow: 12px 12px 0 var(--bd-black);
-    overflow: hidden;
 }
 
 .modal-image {
@@ -517,7 +490,7 @@ body.bd-cover-scene {
     min-height: 520px;
     object-fit: cover;
     display: block;
-    background: #ddd;
+    background: var(--bd-white);
     border-right: 6px solid var(--bd-black);
 }
 
@@ -526,9 +499,20 @@ body.bd-cover-scene {
     display: flex;
     flex-direction: column;
     gap: 18px;
-    background:
-        linear-gradient(rgba(249, 244, 232, 0.96), rgba(249, 244, 232, 0.96)),
-        url("img/back-bd.png") center center / cover no-repeat;
+    /* On utilise la même logique que l'explorateur pour le fond modale */
+    background-color: var(--bd-light-beige);
+    position: relative;
+    z-index: 1;
+}
+
+.modal-text::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("img/back-bd.png") center center / cover no-repeat;
+    opacity: 0.15;
+    z-index: -1;
+    pointer-events: none;
 }
 
 .modal-text h2 {
@@ -536,7 +520,6 @@ body.bd-cover-scene {
     font-size: 2.4rem;
     line-height: 0.95;
     text-transform: uppercase;
-    letter-spacing: 1px;
     color: var(--bd-black);
     margin: 0;
 }
@@ -549,26 +532,15 @@ body.bd-cover-scene {
     border: 3px solid var(--bd-red);
     padding: 8px 14px;
     font-weight: bold;
-    font-size: 0.95rem;
     transform: rotate(-1.5deg);
     box-shadow: 4px 4px 0 var(--bd-black);
 }
 
-.modal-description {
-    background: var(--bd-white);
-    border: 4px solid var(--bd-black);
-    padding: 18px;
-    line-height: 1.65;
-    font-size: 1rem;
-    color: #222;
-    box-shadow: 6px 6px 0 var(--bd-black);
-}
 .modal-text > p {
     font-size: 1.05rem;
     line-height: 1.6;
     color: var(--bd-black);
     margin-bottom: 15px;
-    
     background: var(--bd-white);
     padding: 15px;
     border: 3px solid var(--bd-black);
@@ -589,15 +561,14 @@ body.bd-cover-scene {
     right: 16px;
     z-index: 5;
     background: var(--bd-red);
-    color: var(--bd-white);
+    color: #ffffff;
     border: 3px solid var(--bd-black);
     width: 46px;
     height: 46px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 1rem;
     box-shadow: 4px 4px 0 var(--bd-black);
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+    transition: 0.15s ease;
 }
 
 .close-modal-btn:hover {
@@ -607,109 +578,52 @@ body.bd-cover-scene {
     color: var(--bd-black);
 }
 
-/* =========================================================
-   SAFETY FOR DECORATIVE LAYERS
-   ========================================================= */
-
-.mural-card::before,
-.mural-card::after,
-.mural-image::before,
-.mural-image::after,
-.cover-illustration::before,
-.cover-illustration::after {
-    pointer-events: none;
-}
-
-/* =========================================================
-   VISITED BUTTON ACTIVE STATE
-   ========================================================= */
-
-.visited-active {
-    background: #b8f28f !important;
-    color: #111111;
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0 #111111 !important;
-}
-
-/* =========================================================
-   NOTE PANEL INSIDE MODAL
-   ========================================================= */
-
 .note-panel {
-    background: #f8edd8;
-    border: 4px solid #111111;
+    background: var(--bd-white);
+    border: 4px solid var(--bd-black);
     padding: 18px;
-    box-shadow: 6px 6px 0 #111111;
+    box-shadow: 6px 6px 0 var(--bd-black);
     position: relative;
-    overflow: hidden;
-}
-
-/* small torn-paper effect */
-.note-panel::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -10px;
-    width: calc(100% + 20px);
-    height: 14px;
-    background:
-        linear-gradient(
-            -45deg,
-            transparent 33.33%,
-            #ead9b8 33.33%,
-            #ead9b8 66.66%,
-            transparent 66.66%
-        );
-    background-size: 16px 14px;
-    opacity: 0.9;
+    margin-top: 10px;
 }
 
 .note-title {
     font-family: Impact, "Arial Black", sans-serif;
     font-size: 1.35rem;
     text-transform: uppercase;
-    color: #111111;
+    color: var(--bd-black);
     margin-bottom: 14px;
-    margin-top: 8px;
 }
 
 .note-textarea {
     width: 100%;
-    min-height: 150px;
-    resize: vertical;
-    border: 3px solid #111111;
-    background: #fffdf7;
+    min-height: 120px;
+    border: 3px solid var(--bd-black);
+    background: var(--bd-light-beige);
     padding: 14px;
     font-size: 1rem;
-    line-height: 1.55;
-    font-family: Arial, sans-serif;
-    outline: none;
-    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.03);
-}
-
-.note-textarea:focus {
-    background: #fffaf0;
+    color: var(--text-main);
+    resize: vertical;
 }
 
 .save-note-btn {
     margin-top: 14px;
-    background: #e63946;
+    background: var(--bd-red);
     color: #ffffff;
-    border: 3px solid #111111;
+    border: 3px solid var(--bd-black);
     padding: 12px 18px;
     font-family: Impact, "Arial Black", sans-serif;
-    font-size: 1rem;
     text-transform: uppercase;
     cursor: pointer;
-    box-shadow: 4px 4px 0 #111111;
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, color 0.15s ease;
+    box-shadow: 4px 4px 0 var(--bd-black);
+    transition: 0.15s ease;
 }
 
 .save-note-btn:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 #111111;
-    background: #ffd60a;
-    color: #111111;
+    box-shadow: 6px 6px 0 var(--bd-black);
+    background: var(--bd-yellow);
+    color: var(--bd-black);
 }
 
 .save-note-message {
@@ -720,102 +634,203 @@ body.bd-cover-scene {
 }
 
 /* =========================================================
-   FAVORITES HEADER LAYOUT
+   8. SCRAPBOOK SCREEN 
    ========================================================= */
+#scrapbook-screen {
+    min-height: 100vh;
+    padding: 30px;
+    background-color: var(--bd-beige);
+    background-image: radial-gradient(var(--bd-gray) 1px, transparent 1px);
+    background-size: 20px 20px;
+    z-index: 5;
+}
 
-.favorites-header {
-     display: flex;
-      justify-content: center;
-       align-items: center;
-        gap: 30px; } 
-        
-        
+.scrapbook-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: var(--bd-white);
+    border: 6px solid var(--bd-black);
+    margin-bottom: 30px;
+    box-shadow: 8px 8px 0 var(--bd-black);
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.comic-title {
+    font-family: Impact, sans-serif;
+    font-size: 2.5rem;
+    color: var(--bd-black);
+    text-shadow: 3px 3px 0 var(--bd-yellow);
+    text-transform: uppercase;
+}
+
+#back-btn {
+    background: var(--bd-black);
+    color: #ffffff;
+    border: 4px solid var(--bd-red);
+    padding: 12px 25px;
+    font-family: Impact, sans-serif;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: -6px 6px 0 var(--bd-red); 
+    transition: 0.1s;
+}
+
+#back-btn:hover {
+    background: var(--bd-red);
+    color: #ffffff;
+    border-color: var(--bd-black);
+    transform: translate(2px, -2px);
+    box-shadow: -8px 8px 0 var(--bd-black);
+}
+
+#scrapbook-container {
+    display: grid;
+    /* Même correction auto-fill ici pour la logique de conception */
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 35px;
+    padding: 20px;
+    align-content: start;
+}
+
+.scrap-polaroid {
+    background: var(--bd-white);
+    border: 5px solid var(--bd-black);
+    padding: 12px 12px 15px 12px;
+    position: relative;
+    box-shadow: 8px 8px 0px var(--bd-black);
+    transition: 0.2s;
+}
+
+.scrap-polaroid img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border: 3px solid var(--bd-black);
+}
+
+.scrap-title {
+    margin-top: 15px;
+    font-family: Impact, sans-serif;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    text-align: center;
+    background: var(--bd-black);
+    color: var(--bd-yellow);
+    padding: 8px 10px;
+    border: 2px solid var(--bd-black);
+    display: block;
+}
+
+.tape {
+    width: 80px;
+    height: 25px;
+    background: rgba(255, 235, 150, 0.9);
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-3deg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 2;
+}
+
+.scrap-polaroid.locked {
+    background: #e0e0e0;
+    transform: rotate(2deg);
+}
+
+.scrap-polaroid.locked img {
+    filter: grayscale(100%) contrast(150%) brightness(0.7);
+}
+
+.lock-overlay {
+    position: absolute;
+    inset: 12px 12px auto 12px;
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.6);
+    border: 3px solid var(--bd-black);
+}
+
+.lock-text {
+    background: var(--bd-red);
+    color: #ffffff;
+    padding: 8px 15px;
+    font-family: Impact, sans-serif;
+    font-size: 1.2rem;
+    border: 3px solid var(--bd-black);
+    box-shadow: 4px 4px 0 var(--bd-black);
+    transform: rotate(-5deg);
+}
+
+.scrap-polaroid.unlocked {
+    transform: rotate(-2deg);
+}
+
+.scrap-polaroid.unlocked:hover {
+    transform: rotate(0deg) scale(1.05);
+    z-index: 10;
+}
+
+.comic-badge {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    background: var(--bd-yellow);
+    color: var(--bd-black);
+    border: 4px solid var(--bd-black);
+    padding: 8px 12px;
+    font-family: Impact, sans-serif;
+    font-size: 1.4rem;
+    box-shadow: 4px 4px 0 var(--bd-black);
+    transform: rotate(15deg);
+    z-index: 3;
+}
+
 /* =========================================================
-   RESPONSIVE
+   9. RESPONSIVE
    ========================================================= */
-
 @media (max-width: 900px) {
-    .bd-cover {
-        width: 90%;
-        height: 720px;
-    }
-
-    #main-title {
-        font-size: 3.2rem;
-    }
-
-    .modal-content {
-        grid-template-columns: 1fr;
-    }
-
-    .modal-image {
-        min-height: 300px;
-        max-height: 380px;
-        border-right: none;
-        border-bottom: 6px solid var(--bd-black);
-    }
-
-    .modal-text h2 {
-        font-size: 2rem;
-    }
-
-    #explorer-screen header h1 {
-        font-size: 2.3rem;
-    }
+    .bd-cover { width: 90%; height: 720px; }
+    .modal-content { grid-template-columns: 1fr; }
+    .modal-image { min-height: 300px; max-height: 380px; border-right: none; border-bottom: 6px solid var(--bd-black); }
 }
 
 @media (max-width: 600px) {
-    #home-screen {
-        height: auto;
-        min-height: 100vh;
-    }
+    #home-screen { height: auto; min-height: 100vh; }
+    .bd-cover { width: 92%; height: auto; min-height: 680px; }
+    .explorer-header { flex-direction: column; text-align: center; }
+    .filter-zone { justify-content: center; }
+}
+/* =========================================================
+   10. SCRAPBOOK HEADER & THEME TOGGLE REMAKE
+   ========================================================= */
 
-    .bd-cover {
-        width: 92%;
-        height: auto;
-        min-height: 680px;
-    }
+.scrapbook-header .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+}
 
-    #main-title {
-        font-size: 2.5rem;
-    }
-
-    #sub-title {
-        font-size: 0.95rem;
-        padding: 8px 12px;
-    }
-
-    #explorer-screen {
-        padding: 18px;
-    }
-
-    #explorer-screen header h1 {
-        font-size: 1.8rem;
-        padding: 12px 18px;
-    }
-
-    .mural-image {
-        height: 190px;
-    }
-
-    .mural-info {
-        min-height: 105px;
-    }
-
-    .modal-text {
-        padding: 22px 18px 20px;
-    }
-
-    .modal-text h2 {
-        font-size: 1.7rem;
-    }
-
-    .cover-footer {
-        padding: 16px;
-    }
-
-    #start-btn {
-        font-size: 1.2rem;
-        padding: 14px 18px;
-    }
+#scrap-theme-toggle {
+    background: var(--bd-yellow);
+    color: var(--bd-white);
+    border: 4px solid var(--bd-black);
+    padding: 10px 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--bd-gray);
+    transition: 0.2s ease;
+    margin: 0;
+}
+#scrap-theme-toggle:hover {
+    background: var(--bd-red);
+    color: var(--bd-black);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--bd-black);
 }
