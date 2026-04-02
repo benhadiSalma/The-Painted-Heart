@@ -258,7 +258,7 @@ function updateVisitedStyle(button, title) {
     button.classList.toggle("visited-active", isVisited(title));
 }
 
-//  FAVORIS
+
 function toggleFavorite(mural) {
     const title = getMuralTitle(mural);
     const isFav = favoriteMurals.some(m => getMuralTitle(m) === title);
@@ -324,6 +324,33 @@ themeToggle.addEventListener('click', () => {
     if (body.classList.contains('dark-mode')) {
         themeToggle.textContent = '☀️';
     } else {
-        themeToggle.textContent = '🌙';
+        themeToggle.textContent = '🌑';
     }
+});
+/* =========================================================
+   12. LANGUAGE TOGGLE
+   ========================================================= */
+const translations = {
+    en: {
+        title: "BRUSSELS EXPLORER",
+        search: "Search title...",
+        favorites: "❤️ MY FAVORITES",
+        scrapbook: "SCRAPBOOK"
+    },
+    fr: {
+        title: "BRUXELLES EXPLORER",
+        search: "Chercher...",
+        favorites: "❤️ MES FAVORIS",
+        scrapbook: "ALBUM"
+    }
+};
+
+document.getElementById('language-select').addEventListener('change', (e) => {
+    const lang = e.target.value;
+    
+   
+    document.querySelector('.header-title-box h1').textContent = translations[lang].title;
+    document.getElementById('search-input').placeholder = translations[lang].search;
+    document.getElementById('favorites-btn').textContent = translations[lang].favorites;
+    document.getElementById('scrapbook-btn').textContent = translations[lang].scrapbook;
 });
