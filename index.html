@@ -15,34 +15,44 @@
             <img src="img/back-bd.png" alt="Ville de Bruxelles illustrée en mode BD" id="bg-image">
         </div>
 
-       <main class="bd-cover">
-    <div class="cover-header">
-        <h1 id="main-title">THE PAINTED HEART</h1>
-        <p id="sub-title">Explore the streets of Brussels and play your part</p>
-    </div>
-
-    <div class="cover-illustration"></div>
-
-    <div class="cover-footer">
-        <button id="start-btn">START EXPLORING</button>
-    </div>
-</main>
-    </section>
-
     <section id="explorer-screen" class="hidden-section">
-        <header>
-            <h1>Brussels Explorer</h1>
-        </header>
-        <div id="gallery-container">
-        </div>
-    </section>
-
-    <section id="explorer-screen" class="hidden-section">
-        <header>
-            <h1>Brussels Explorer</h1>
-        </header>
+        <header class="explorer-header">
+    <div class="filter-zone">
+        <input type="text" id="search-input" placeholder="Search title...">
+        <select id="commune-select">
+            <option value="">All Districts</option>
+            <option value="Bruxelles">Bruxelles</option>
+            <option value="Laeken">Laeken</option>
+            <option value="Haren">Haren</option>
+        </select>
+    </div>
     
+    <button id="favorites-btn">❤️ My Favorites</button>
+    <h1>Brussels Explorer</h1>
+    <button id="scrapbook-btn">Scrapbook</button>
+    <button id="theme-toggle" class="theme-btn">🌙</button>
+</header>
+           
         <div id="gallery-container"></div>
+    </section>
+
+    <section id="scrapbook-screen" class="hidden-section">
+        <header class="scrapbook-header">
+            <h1 class="comic-title">MY SCRAPBOOK 💥</h1>
+            <button id="back-btn">← Back</button>
+        </header>
+
+        <div id="scrapbook-container"></div>
+        
+    </section>
+
+    <section id="favorites-screen" class="hidden-section">
+        <header class="favorites-header">
+            <h1 class="comic-title">MY FAVORITES ❤️</h1>
+            <button id="back-btn">← Back</button>
+        </header>
+        <div id="favorites-container" class="grid-layout"></div>
+        
     </section>
 
     <script src="script.js"></script>
